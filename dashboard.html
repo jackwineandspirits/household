@@ -235,18 +235,20 @@
   .sec-tags{grid-area:tags;}
 
   /* ---------- Exercises ---------- */
-  .ex-grid{
+  .ex-cols{
     display:grid;
     grid-template-columns:1fr;
-    gap:2px;
+    gap:4px 28px;
   }
-  @media (min-width:640px){
-    .ex-grid{ grid-template-columns:1fr 1fr; }
+  @media (min-width:480px){
+    .ex-cols{ grid-template-columns:1fr 1fr; }
   }
+  .ex-col .med-subhead{ margin-top:0; }
   .ex-row{
-    padding:clamp(7px,0.9vw,10px) 4px;
+    padding:4px 2px;
     border-top:1px solid var(--border);
-    font-size:clamp(14px,1.05vw,16px);
+    font-size:clamp(13px,0.98vw,15px);
+    line-height:1.3;
   }
   .ex-row:first-child{ border-top:none; }
 
@@ -584,29 +586,30 @@
     <section class="sec-exercises">
       <h2>Exercises</h2>
 
-      <div class="med-subhead">Sitting</div>
-      <div class="ex-grid">
-        <div class="ex-row">10 toe taps/raises</div>
-        <div class="ex-row">10 heel taps/raises</div>
-        <div class="ex-row">10 leg lifts</div>
-        <div class="ex-row">10 knee extensions</div>
-        <div class="ex-row">5 sit to stand</div>
-      </div>
-
-      <div class="med-subhead">At the Counter</div>
-      <div class="ex-grid">
-        <div class="ex-row">10 standing calf raises, tip toe</div>
-        <div class="ex-row">10 side toe taps &mdash; don&rsquo;t drag feet</div>
-        <div class="ex-row">10 hamstring curls &mdash; bend leg at knee</div>
-        <div class="ex-row">10 knee&#8209;up marches</div>
-      </div>
-
-      <div class="med-subhead">Other</div>
-      <div class="ex-grid">
-        <div class="ex-row">10 minutes on the bike</div>
+      <div class="ex-cols">
+        <div class="ex-col">
+          <div class="med-subhead">Sitting</div>
+          <div class="ex-list">
+            <div class="ex-row">10 toe taps/raises</div>
+            <div class="ex-row">10 heel taps/raises</div>
+            <div class="ex-row">10 leg lifts</div>
+            <div class="ex-row">10 knee extensions</div>
+            <div class="ex-row">5 sit to stand</div>
+          </div>
+        </div>
+        <div class="ex-col">
+          <div class="med-subhead">At the Counter</div>
+          <div class="ex-list">
+            <div class="ex-row">10 standing calf raises, tip toe</div>
+            <div class="ex-row">10 side toe taps &mdash; don&rsquo;t drag feet</div>
+            <div class="ex-row">10 hamstring curls &mdash; bend leg at knee</div>
+            <div class="ex-row">10 knee&#8209;up marches</div>
+          </div>
+        </div>
       </div>
 
       <div class="med-note">
+        <div><b>Also:</b> 10 minutes on the bike</div>
         <div><b>Goal:</b> 3 times a week minimum &mdash; every day ideal</div>
       </div>
     </section>
