@@ -1,0 +1,724 @@
+<title>The Daniels Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#FBF7EF;
+    --surface:#FFFFFF;
+    --surface-alt:#F2ECDC;
+    --border:#E3D9C0;
+    --text:#25323C;
+    --text-muted:#5C6B72;
+    --accent:#33665D;
+    --accent-strong:#234A43;
+    --accent-contrast:#FFFFFF;
+    --highlight-bg:#FCEDCB;
+    --highlight-border:#C08A2E;
+    --highlight-text:#5C4009;
+    --flag:#9C3B34;
+    --flag-bg:#F7E4DF;
+    --flag-border:#E3B7AC;
+    --shadow:rgba(37,50,60,0.08);
+    --pill-bg:#EDE4CC;
+    --pill-fg:#4C5A48;
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12181B;
+      --surface:#1B2226;
+      --surface-alt:#212A2E;
+      --border:#333F44;
+      --text:#EEE8DA;
+      --text-muted:#A9B4B7;
+      --accent:#6FB6A6;
+      --accent-strong:#8FCBBC;
+      --accent-contrast:#0E1C19;
+      --highlight-bg:#3A2E12;
+      --highlight-border:#D9A64A;
+      --highlight-text:#F3D384;
+      --flag:#E38F86;
+      --flag-bg:#3A211E;
+      --flag-border:#5C332D;
+      --shadow:rgba(0,0,0,0.45);
+      --pill-bg:#2A3128;
+      --pill-fg:#C9D2BF;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12181B;
+    --surface:#1B2226;
+    --surface-alt:#212A2E;
+    --border:#333F44;
+    --text:#EEE8DA;
+    --text-muted:#A9B4B7;
+    --accent:#6FB6A6;
+    --accent-strong:#8FCBBC;
+    --accent-contrast:#0E1C19;
+    --highlight-bg:#3A2E12;
+    --highlight-border:#D9A64A;
+    --highlight-text:#F3D384;
+    --flag:#E38F86;
+    --flag-bg:#3A211E;
+    --flag-border:#5C332D;
+    --shadow:rgba(0,0,0,0.45);
+    --pill-bg:#2A3128;
+    --pill-fg:#C9D2BF;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Public Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;
+    text-wrap:balance;
+    margin:0;
+  }
+  ::selection{ background:var(--accent); color:var(--accent-contrast); }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+  }
+
+  .wrap{
+    max-width:1400px;
+    margin:0 auto;
+    padding:clamp(14px,2.4vw,34px);
+    display:flex;
+    flex-direction:column;
+    gap:clamp(16px,2vw,28px);
+  }
+
+  /* ---------- Header ---------- */
+  header.top{
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text);
+    border-radius:20px;
+    padding:clamp(16px,2.2vw,30px) clamp(20px,3vw,38px);
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:clamp(14px,2vw,26px);
+    box-shadow:0 4px 16px var(--shadow);
+  }
+  header.top .date-block{ min-width:220px; }
+  header.top .weekday{
+    font-family:"Fraunces", serif;
+    font-weight:700;
+    font-size:clamp(20px,2.2vw,30px);
+    letter-spacing:.2px;
+    color:var(--accent);
+  }
+  header.top .fulldate{
+    font-size:clamp(13px,1.2vw,17px);
+    color:var(--text-muted);
+    margin-top:2px;
+  }
+  header.top .verse{
+    font-style:italic;
+    font-size:clamp(13px,1.1vw,16px);
+    max-width:480px;
+    margin-top:10px;
+    color:var(--text);
+    opacity:.85;
+  }
+  header.top .clock-block{ text-align:center; }
+  header.top .clock{
+    font-family:"Public Sans", sans-serif;
+    font-weight:800;
+    font-variant-numeric:tabular-nums;
+    font-size:clamp(42px,6.6vw,90px);
+    line-height:1;
+    letter-spacing:-1px;
+    color:var(--accent);
+  }
+  header.top .clock .ampm{
+    font-size:0.32em;
+    font-weight:700;
+    margin-left:6px;
+    opacity:.75;
+  }
+  header.top .updated{
+    margin-top:8px;
+    font-size:clamp(11px,0.9vw,13px);
+    color:var(--text-muted);
+    letter-spacing:.02em;
+  }
+  header.top .weather{
+    text-align:right;
+    min-width:170px;
+  }
+  header.top .weather .temp{
+    font-size:clamp(28px,3.2vw,42px);
+    font-weight:800;
+    line-height:1;
+    color:var(--text);
+  }
+  header.top .weather .cond{
+    font-size:clamp(13px,1.1vw,16px);
+    color:var(--text-muted);
+    margin-top:4px;
+  }
+  header.top .weather .place{
+    font-size:clamp(11px,1vw,14px);
+    color:var(--text-muted);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-top:6px;
+    opacity:.8;
+  }
+
+  /* ---------- Section shell ---------- */
+  section{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:clamp(18px,2vw,28px);
+    box-shadow:0 4px 16px var(--shadow);
+  }
+  section > h2{
+    font-size:clamp(20px,2vw,28px);
+    color:var(--accent);
+    margin-bottom:clamp(12px,1.4vw,20px);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  section > h2 .eyebrow{
+    font-family:"Public Sans",sans-serif;
+    font-weight:700;
+    font-size:0.4em;
+    text-transform:uppercase;
+    letter-spacing:.09em;
+    color:var(--text-muted);
+    background:var(--surface-alt);
+    padding:4px 10px;
+    border-radius:999px;
+  }
+
+  /* ---------- Grid layout ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:clamp(16px,2vw,28px);
+    grid-template-areas:
+      "appt"
+      "email"
+      "meds"
+      "tags";
+  }
+  @media (min-width:920px){
+    .grid{
+      grid-template-columns:1.5fr 1fr;
+      grid-template-areas:
+        "appt email"
+        "meds meds"
+        "tags tags";
+    }
+  }
+  .sec-appt{grid-area:appt;}
+  .sec-meds{grid-area:meds;}
+  .sec-email{grid-area:email;}
+  .sec-tags{grid-area:tags;}
+
+  /* ---------- Appointments ---------- */
+  .next-appt{
+    background:var(--highlight-bg);
+    border:1px solid var(--highlight-border);
+    border-radius:12px;
+    padding:clamp(9px,1vw,13px) clamp(12px,1.3vw,16px);
+    margin-bottom:clamp(10px,1.2vw,14px);
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    column-gap:12px;
+    row-gap:2px;
+  }
+  .next-appt .kicker{
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-size:clamp(10px,0.85vw,11.5px);
+    color:var(--highlight-text);
+    flex-basis:100%;
+    margin-bottom:1px;
+  }
+  .next-appt .title{
+    font-family:"Fraunces",serif;
+    font-weight:700;
+    font-size:clamp(16px,1.4vw,19px);
+    color:var(--text);
+  }
+  .next-appt .meta{
+    font-size:clamp(12.5px,0.95vw,14.5px);
+    color:var(--text-muted);
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px 10px;
+  }
+  .next-appt .meta b{ font-variant-numeric:tabular-nums; color:var(--text); font-weight:700; }
+
+  .appt-list{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .appt-row{
+    display:flex;
+    gap:clamp(10px,1.4vw,18px);
+    align-items:flex-start;
+    padding:clamp(10px,1.2vw,14px) 4px;
+    border-top:1px solid var(--border);
+  }
+  .appt-row .when{
+    min-width:112px;
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+    font-size:clamp(14px,1.1vw,17px);
+    color:var(--accent);
+    line-height:1.3;
+  }
+  .appt-row .when .d{ display:block; color:var(--text-muted); font-weight:600; font-size:0.82em; }
+  .appt-row .what{ flex:1; min-width:0; }
+  .appt-row .what .name{ font-weight:700; font-size:clamp(15px,1.15vw,18px); }
+  .appt-row .what .loc{ color:var(--text-muted); font-size:clamp(13px,1vw,15px); margin-top:2px; }
+  .appt-row .flag{
+    margin-top:8px;
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    background:var(--flag-bg);
+    border:1px solid var(--flag-border);
+    color:var(--flag);
+    border-radius:10px;
+    padding:8px 10px;
+    font-size:clamp(12.5px,0.98vw,14.5px);
+    font-weight:600;
+  }
+
+  /* ---------- Medications ---------- */
+  .med-subhead{
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    font-size:clamp(11.5px,1vw,13px);
+    color:var(--text-muted);
+    margin:clamp(14px,1.6vw,20px) 0 8px;
+  }
+  .med-subhead:first-child{ margin-top:0; }
+  .med-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:2px;
+  }
+  @media (min-width:640px){
+    .med-grid{ grid-template-columns:1fr 1fr; }
+  }
+  .med-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+    padding:clamp(8px,1vw,11px) 4px;
+    border-top:1px solid var(--border);
+  }
+  .med-row .info{ min-width:0; }
+  .med-row .name{ font-weight:700; font-size:clamp(14.5px,1.1vw,17px); }
+  .med-row .dose{ color:var(--text-muted); font-size:clamp(12.5px,0.95vw,14.5px); margin-top:1px; }
+  .pill{
+    flex:none;
+    font-size:clamp(11px,0.85vw,12.5px);
+    font-weight:700;
+    padding:4px 11px;
+    border-radius:999px;
+    white-space:nowrap;
+    background:var(--pill-bg);
+    color:var(--pill-fg);
+  }
+
+  .med-note{
+    margin-top:clamp(14px,1.6vw,18px);
+    background:var(--surface-alt);
+    border-radius:14px;
+    padding:clamp(12px,1.4vw,16px);
+    font-size:clamp(13px,1vw,15px);
+    color:var(--text);
+  }
+  .med-note div + div{ margin-top:6px; }
+  .med-note b{ color:var(--accent); }
+
+  /* ---------- Email ---------- */
+  .mail-list{ display:flex; flex-direction:column; }
+  .mail-row{
+    padding:clamp(9px,1vw,12px) 4px;
+    border-top:1px solid var(--border);
+  }
+  .mail-row .subj{ font-weight:700; font-size:clamp(14px,1.05vw,16px); }
+  .mail-row .from{ color:var(--text-muted); font-size:clamp(11.5px,0.85vw,13px); text-transform:uppercase; letter-spacing:.04em; margin-top:1px;}
+  .mail-row .note{ font-size:clamp(13px,0.98vw,14.5px); margin-top:4px; color:var(--text); }
+  .mail-row .when{ font-size:clamp(11px,0.85vw,12.5px); color:var(--text-muted); margin-top:4px; }
+
+  /* ---------- Health tags ---------- */
+  .sec-tags{
+    background:transparent;
+    border:none;
+    box-shadow:none;
+    padding:6px clamp(6px,1vw,12px);
+    text-align:center;
+  }
+  .sec-tags .label{
+    font-size:clamp(11px,0.9vw,13px);
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    color:var(--text-muted);
+    margin-bottom:10px;
+  }
+  .tag-row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+  }
+  .tag-row .pill{ font-size:clamp(11.5px,0.85vw,13px); padding:6px 14px; opacity:.85; }
+
+  /* ---------- Night mode ---------- */
+  .night-screen{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#05070A;
+    color:#5B6874;
+    z-index:9999;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+  }
+  html.night .night-screen{ display:flex; }
+  html.night .wrap{ display:none; }
+  .night-screen .n-clock{
+    font-family:"Public Sans",sans-serif;
+    font-weight:700;
+    font-variant-numeric:tabular-nums;
+    font-size:clamp(52px,14vw,180px);
+    line-height:1;
+    letter-spacing:-2px;
+  }
+  .night-screen .n-clock .ampm{ font-size:0.28em; margin-left:8px; }
+  .night-screen .n-date{
+    font-family:"Fraunces",serif;
+    font-size:clamp(15px,2.2vw,26px);
+    color:#414D57;
+  }
+</style>
+
+<div class="night-screen" id="nightScreen">
+  <div class="n-clock" id="nightClock">--:--<span class="ampm">AM</span></div>
+  <div class="n-date" id="nightDate">&nbsp;</div>
+</div>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="date-block">
+      <div class="weekday" id="weekday">&nbsp;</div>
+      <div class="fulldate" id="fulldate">&nbsp;</div>
+      <div class="verse" id="verse">&nbsp;</div>
+    </div>
+    <div class="clock-block">
+      <div class="clock" id="clock">--:--<span class="ampm">AM</span></div>
+      <div class="updated" id="updated">Last updated: Tuesday, September 1, 2026 &middot; 10:21 AM ET</div>
+    </div>
+    <div class="weather">
+      <div class="temp">85&deg;</div>
+      <div class="cond">Fair &middot; Feels 96&deg;</div>
+      <div class="place">Sarasota, FL</div>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <section class="sec-appt">
+      <h2>Appointments <span class="eyebrow">Medical &middot; Important &middot; Phone</span></h2>
+
+      <div class="next-appt">
+        <div class="kicker">Next Up &mdash; Today</div>
+        <div class="title">Pat McCarthy &mdash; Audiologist (Phone)</div>
+        <div class="meta"><b>11:15 AM</b> <span>&middot;</span> <span>Tuesday, September 1</span> <span>&middot;</span> <span>(941) 342&#8209;9494</span></div>
+      </div>
+
+      <div class="appt-list">
+        <div class="appt-row">
+          <div class="when">Sep 1<span class="d">Tue &middot; 12:00 PM</span></div>
+          <div class="what">
+            <div class="name">Barbara Silby &mdash; Physical Therapy</div>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="when">Sep 2<span class="d">Wed &middot; 3:00 AM</span></div>
+          <div class="what">
+            <div class="name">Fran Tidewater</div>
+            <div class="loc">Tidewater Total Mind Care</div>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="when">Sep 3<span class="d">Thu &middot; 10:00 AM</span></div>
+          <div class="what">
+            <div class="name">5th Infusion</div>
+            <div class="loc">Intercoastal Medical Group, 5951 Cattleridge Ave, Sarasota</div>
+            <div class="flag">&#9888; Pre&#8209;medicate 2 hrs before: 1 Zyrtec + 2 Tylenol (take by 8:00 AM)</div>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="when">Sep 3<span class="d">Thu &middot; 1:00 PM</span></div>
+          <div class="what">
+            <div class="name">New Libre (sensor) placement</div>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="when">Sep 3<span class="d">Thu &middot; 2:00 PM</span></div>
+          <div class="what">
+            <div class="name">Dr. Bart Price &mdash; Primary Care</div>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="when">Sep 8<span class="d">Tue &middot; 10:00 AM</span></div>
+          <div class="what">
+            <div class="name">Tonya Steed &mdash; Audiologist</div>
+            <div class="loc">5432 Bee Ridge Rd, Suite 170, Sarasota</div>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="when">Sep 14<span class="d">Mon &middot; 8:30 AM</span></div>
+          <div class="what">
+            <div class="name">Pacemaker Check &mdash; Dr. Class</div>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="when">Sep 15<span class="d">Tue &middot; 9:00 AM</span></div>
+          <div class="what">
+            <div class="name">Medication reminder</div>
+            <div class="flag">&#9888; Stop taking Aspirin</div>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="when">Sep 15<span class="d">Tue &middot; 12:30 PM</span></div>
+          <div class="what">
+            <div class="name">Rick Waid &mdash; Physical Therapy</div>
+            <div class="loc">941&#8209;735&#8209;4207</div>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="when">Sep 17<span class="d">Thu &middot; 9:00 AM</span></div>
+          <div class="what">
+            <div class="name">Camila (Empath) &mdash; Catheter change</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec-email">
+      <h2>From Your Email</h2>
+      <div class="mail-list">
+        <div class="mail-row">
+          <div class="subj">A sooner appointment is available</div>
+          <div class="from">MyChart &middot; Cleveland Clinic</div>
+          <div class="note">An earlier slot opened up on the wait list &mdash; sign in to MyChart to review it.</div>
+          <div class="when">Aug 31</div>
+        </div>
+        <div class="mail-row">
+          <div class="subj">Appointment reminder &mdash; Wed, Sept 2</div>
+          <div class="from">Tidewater Total Mind Care</div>
+          <div class="note">Upcoming visit reminder from your provider.</div>
+          <div class="when">Aug 31</div>
+        </div>
+        <div class="mail-row">
+          <div class="subj">Medication review before neurology visit</div>
+          <div class="from">Your notes to Josh</div>
+          <div class="note">A review of current medications against recent numbness &amp; tingling symptoms, for the upcoming neurology appointment.</div>
+          <div class="when">Aug 31</div>
+        </div>
+        <div class="mail-row">
+          <div class="subj">Cleveland Clinic records sent</div>
+          <div class="from">Teresa Monfils</div>
+          <div class="note">Records and current prescription list were sent ahead to Cleveland Clinic.</div>
+          <div class="when">Aug 18</div>
+        </div>
+        <div class="mail-row">
+          <div class="subj">Prescription drug plan changes coming</div>
+          <div class="from">Aetna SilverScript</div>
+          <div class="note">2027 Annual Notice of Change is on its way &mdash; for both Jack and Gayle's plans.</div>
+          <div class="when">Aug 25</div>
+        </div>
+        <div class="mail-row">
+          <div class="subj">Recent health care claim summary</div>
+          <div class="from">Anthem Blue Cross</div>
+          <div class="note">A summary of a recent health care claim is ready to view online.</div>
+          <div class="when">Aug 26</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec-meds">
+      <h2>Medications</h2>
+
+      <div class="med-subhead">Prescriptions</div>
+      <div class="med-grid">
+        <div class="med-row"><div class="info"><div class="name">Colesevelam</div><div class="dose">625mg &middot; 1 tab, 4x daily</div></div><span class="pill">Cholesterol</span></div>
+        <div class="med-row"><div class="info"><div class="name">Omeprazole ER</div><div class="dose">40mg &middot; 1 pill, AM &amp; PM</div></div><span class="pill">GI</span></div>
+        <div class="med-row"><div class="info"><div class="name">Mometasone Nasal Spray</div><div class="dose">50mcg &middot; 1 spray, 2x daily</div></div><span class="pill">Sinus</span></div>
+        <div class="med-row"><div class="info"><div class="name">Ipratropium Nasal Spray</div><div class="dose">42mcg &middot; 1 spray, 2x daily</div></div><span class="pill">Sinus</span></div>
+        <div class="med-row"><div class="info"><div class="name">Ferrous Sulfate</div><div class="dose">325mg &middot; 1 tab daily</div></div><span class="pill">Anemia</span></div>
+        <div class="med-row"><div class="info"><div class="name">Sertraline (Zoloft)</div><div class="dose">150mg &middot; 1x daily</div></div><span class="pill">Mood</span></div>
+        <div class="med-row"><div class="info"><div class="name">Nitrofurantoin Monohydrate</div><div class="dose">100mg &middot; 2x daily</div></div><span class="pill">Urology</span></div>
+        <div class="med-row"><div class="info"><div class="name">Kisunla (donanemab&#8209;azbt)</div><div class="dose">Infusion, 1x monthly &middot; 18 months</div></div><span class="pill">Neurology</span></div>
+        <div class="med-row"><div class="info"><div class="name">Colchicine</div><div class="dose">0.6mg &middot; 1x daily</div></div><span class="pill">Gout</span></div>
+        <div class="med-row"><div class="info"><div class="name">Clopidogrel (Plavix)</div><div class="dose">75mg &middot; 1x daily</div></div><span class="pill">Cardiac</span></div>
+        <div class="med-row"><div class="info"><div class="name">Mirtazapine</div><div class="dose">&frac12; tab &times; 2 nights, then 1 tab</div></div><span class="pill">Sleep</span></div>
+        <div class="med-row"><div class="info"><div class="name">Niacinamide</div><div class="dose">500mg &middot; 2x daily</div></div><span class="pill">Skin</span></div>
+        <div class="med-row"><div class="info"><div class="name">Divalproex ER</div><div class="dose">250mg &middot; if headache persists 1 wk, then 2 tabs daily</div></div><span class="pill">Neurology</span></div>
+        <div class="med-row"><div class="info"><div class="name">Divalproex ER</div><div class="dose">260mg &middot; if headache persists 1 wk, then 2 tabs daily</div></div><span class="pill">Neurology</span></div>
+        <div class="med-row"><div class="info"><div class="name">Indomethacin</div><div class="dose">25mg &middot; 3x daily with food or milk</div></div><span class="pill">Pain</span></div>
+      </div>
+
+      <div class="med-subhead">Supplements</div>
+      <div class="med-grid">
+        <div class="med-row"><div class="info"><div class="name">Heliocare Advanced</div><div class="dose">2 capsules, 1x daily</div></div><span class="pill">Skin</span></div>
+        <div class="med-row"><div class="info"><div class="name">Thorne Omega&#8209;3 + CoQ10</div><div class="dose">1 capsule, 2x daily</div></div><span class="pill">Cardiac</span></div>
+        <div class="med-row"><div class="info"><div class="name">Vitamin D3+K2 (w/ coconut oil)</div><div class="dose">1 tab, 1x daily</div></div><span class="pill">Bone</span></div>
+      </div>
+
+      <div class="med-note">
+        <div><b>As needed:</b> Tramadol 50mg &mdash; for headaches</div>
+        <div><b>Only before dental visits:</b> Amoxicillin 500mg &mdash; 4 tablets, 1 hour before appointment <span class="pill" style="margin-left:6px;">Dental</span></div>
+      </div>
+    </section>
+
+    <div class="sec-tags">
+      <div class="label">Health Focus</div>
+      <div class="tag-row">
+        <span class="pill">Neurology</span>
+        <span class="pill">Cardiac</span>
+        <span class="pill">Urology</span>
+        <span class="pill">GI</span>
+        <span class="pill">Sinus</span>
+        <span class="pill">Mood</span>
+        <span class="pill">Diabetes</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var verses = [
+    ["The Lord is my shepherd; I shall not want.","Psalm 23:1"],
+    ["Be still, and know that I am God.","Psalm 46:10"],
+    ["I can do all things through Christ which strengtheneth me.","Philippians 4:13"],
+    ["Trust in the Lord with all thine heart.","Proverbs 3:5"],
+    ["This is the day which the Lord hath made; we will rejoice and be glad in it.","Psalm 118:24"],
+    ["The Lord is my light and my salvation; whom shall I fear?","Psalm 27:1"],
+    ["Cast thy burden upon the Lord, and he shall sustain thee.","Psalm 55:22"],
+    ["Fear thou not; for I am with thee.","Isaiah 41:10"],
+    ["The joy of the Lord is your strength.","Nehemiah 8:10"],
+    ["Weeping may endure for a night, but joy cometh in the morning.","Psalm 30:5"],
+    ["Give thanks unto the Lord, for he is good.","Psalm 107:1"],
+    ["Let not your heart be troubled.","John 14:1"],
+    ["The Lord bless thee, and keep thee.","Numbers 6:24"],
+    ["In quietness and in confidence shall be your strength.","Isaiah 30:15"],
+    ["He giveth power to the faint.","Isaiah 40:29"],
+    ["Rejoice in the Lord alway: and again I say, Rejoice.","Philippians 4:4"],
+    ["My grace is sufficient for thee.","2 Corinthians 12:9"],
+    ["The eternal God is thy refuge.","Deuteronomy 33:27"],
+    ["Delight thyself also in the Lord.","Psalm 37:4"],
+    ["Thou wilt keep him in perfect peace, whose mind is stayed on thee.","Isaiah 26:3"],
+    ["The Lord thy God in the midst of thee is mighty.","Zephaniah 3:17"],
+    ["Great is thy faithfulness.","Lamentations 3:23"],
+    ["I will lift up mine eyes unto the hills, from whence cometh my help.","Psalm 121:1"],
+    ["As for God, his way is perfect.","Psalm 18:30"],
+    ["The name of the Lord is a strong tower.","Proverbs 18:10"],
+    ["Be of good courage, and he shall strengthen thine heart.","Psalm 31:24"],
+    ["Commit thy way unto the Lord; trust also in him.","Psalm 37:5"],
+    ["It is good to give thanks unto the Lord.","Psalm 92:1"],
+    ["Ye shall know the truth, and the truth shall make you free.","John 8:32"],
+    ["Bless the Lord, O my soul.","Psalm 103:1"],
+    ["The Lord is good, a strong hold in the day of trouble.","Nahum 1:7"],
+    ["God is our refuge and strength, a very present help in trouble.","Psalm 46:1"],
+    ["Thou art my hiding place; thou shalt preserve me from trouble.","Psalm 32:7"],
+    ["The Lord is nigh unto them that are of a broken heart.","Psalm 34:18"],
+    ["Charity suffereth long, and is kind.","1 Corinthians 13:4"],
+    ["Love one another; as I have loved you.","John 13:34"],
+    ["Now abideth faith, hope, charity, these three.","1 Corinthians 13:13"],
+    ["The Lord will give strength unto his people.","Psalm 29:11"],
+    ["Blessed are the pure in heart: for they shall see God.","Matthew 5:8"],
+    ["The Lord is my strength and my shield.","Psalm 28:7"]
+  ];
+
+  function dayOfYear(d){
+    var start = new Date(d.getFullYear(),0,0);
+    var diff = d - start;
+    return Math.floor(diff / 86400000);
+  }
+
+  function pad(n){ return n < 10 ? "0"+n : ""+n; }
+
+  function getNow(){
+    var params = new URLSearchParams(window.location.search);
+    var d = new Date();
+    if (params.has('hour')){
+      d.setHours(parseInt(params.get('hour'),10) || 0, d.getMinutes(), d.getSeconds());
+    }
+    return d;
+  }
+
+  function renderVerse(d){
+    var v = verses[dayOfYear(d) % verses.length];
+    document.getElementById('verse').textContent = "\u201C" + v[0] + "\u201D \u2014 " + v[1] + " (KJV)";
+  }
+
+  function renderDate(d){
+    var weekdayNames = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    document.getElementById('weekday').textContent = weekdayNames[d.getDay()];
+    document.getElementById('fulldate').textContent = monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear();
+    document.getElementById('nightDate').textContent = weekdayNames[d.getDay()] + ", " + monthNames[d.getMonth()] + " " + d.getDate();
+  }
+
+  function renderClock(d){
+    var h = d.getHours();
+    var m = pad(d.getMinutes());
+    var ampm = h >= 12 ? "PM" : "AM";
+    var h12 = h % 12; if (h12 === 0) h12 = 12;
+    var html = h12 + ":" + m + '<span class="ampm">' + ampm + '</span>';
+    document.getElementById('clock').innerHTML = html;
+    document.getElementById('nightClock').innerHTML = html;
+  }
+
+  function isNight(h){
+    return (h >= 22 || h < 4);
+  }
+
+  function tick(){
+    var d = getNow();
+    renderClock(d);
+    renderDate(d);
+    renderVerse(d);
+    document.documentElement.classList.toggle('night', isNight(d.getHours()));
+  }
+
+  tick();
+  setInterval(tick, 15000);
+})();
+</script>
