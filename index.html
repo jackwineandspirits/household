@@ -214,6 +214,7 @@
     grid-template-areas:
       "appt"
       "email"
+      "exercises"
       "meds"
       "tags";
   }
@@ -222,14 +223,32 @@
       grid-template-columns:1.5fr 1fr;
       grid-template-areas:
         "appt email"
+        "exercises exercises"
         "meds meds"
         "tags tags";
     }
   }
   .sec-appt{grid-area:appt;}
+  .sec-exercises{grid-area:exercises;}
   .sec-meds{grid-area:meds;}
   .sec-email{grid-area:email;}
   .sec-tags{grid-area:tags;}
+
+  /* ---------- Exercises ---------- */
+  .ex-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:2px;
+  }
+  @media (min-width:640px){
+    .ex-grid{ grid-template-columns:1fr 1fr; }
+  }
+  .ex-row{
+    padding:clamp(7px,0.9vw,10px) 4px;
+    border-top:1px solid var(--border);
+    font-size:clamp(14px,1.05vw,16px);
+  }
+  .ex-row:first-child{ border-top:none; }
 
   /* ---------- Appointments ---------- */
   .next-appt{
@@ -559,6 +578,36 @@
           <div class="note">2027 Annual Notice of Change is on its way &mdash; for both Jack and Gayle's plans.</div>
           <div class="when">Aug 25</div>
         </div>
+      </div>
+    </section>
+
+    <section class="sec-exercises">
+      <h2>Exercises</h2>
+
+      <div class="med-subhead">Sitting</div>
+      <div class="ex-grid">
+        <div class="ex-row">10 toe taps/raises</div>
+        <div class="ex-row">10 heel taps/raises</div>
+        <div class="ex-row">10 leg lifts</div>
+        <div class="ex-row">10 knee extensions</div>
+        <div class="ex-row">5 sit to stand</div>
+      </div>
+
+      <div class="med-subhead">At the Counter</div>
+      <div class="ex-grid">
+        <div class="ex-row">10 standing calf raises, tip toe</div>
+        <div class="ex-row">10 side toe taps &mdash; don&rsquo;t drag feet</div>
+        <div class="ex-row">10 hamstring curls &mdash; bend leg at knee</div>
+        <div class="ex-row">10 knee&#8209;up marches</div>
+      </div>
+
+      <div class="med-subhead">Other</div>
+      <div class="ex-grid">
+        <div class="ex-row">10 minutes on the bike</div>
+      </div>
+
+      <div class="med-note">
+        <div><b>Goal:</b> 3 times a week minimum &mdash; every day ideal</div>
       </div>
     </section>
 
